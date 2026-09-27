@@ -50,8 +50,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
         if user_input is not None:
             final_data = user_input.copy()
-            final_data["device_type"] = f"{user_input['device_type_prefix']}-{user_input['device_type_number']}"
-            
+            final_data["device_type"] = user_input["device_type_prefix"]
+
             del final_data["device_type_prefix"]
             del final_data["device_type_number"]
 
