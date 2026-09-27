@@ -12,9 +12,13 @@ class MarstekCtApi:
         self._host = host
         self._port = 12345
         self._device_type = device_type
-        self._battery_mac = battery_mac
-        self._ct_mac = ct_mac
-        self._ct_type = ct_type
++
++        # MACs formatieren
++       self._battery_mac = battery_mac.replace(":", "").upper()
++       self._ct_mac = ct_mac.replace(":", "").lower()
++
++        # ct_type unverändert übernehmen
++       self._ct_type = ct_type
         self._timeout = 5.0
         self._payload = self._build_payload()
 
