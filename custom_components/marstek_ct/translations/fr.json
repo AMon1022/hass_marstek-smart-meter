@@ -1,0 +1,70 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Compteur Marstek CT",
+        "description": "Veuillez saisir les informations de connexion. Les adresses MAC doivent être les chaînes hexadécimales de 12 caractères visibles dans 'Gestion des appareils' de l'application officielle Marstek.",
+        "data": {
+          "host": "Adresse IP du compteur CT",
+          "battery_mac": "Adresse MAC de la Batterie (laisser par défaut si absent)",
+          "ct_mac": "Adresse MAC du compteur CT (dans l'application)",
+          "device_type_prefix": "Type de stockage",
+          "device_type_number": "Numéro de stockage",
+          "ct_type": "Type de compteur CT"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Échec de connexion au compteur. Vérifiez l'adresse IP et que le port UDP 12345 est accessible.",
+      "invalid_auth": "Identifiants invalides. Vérifiez l'adresse MAC.",
+      "unknown": "Une erreur inconnue s'est produite."
+    },
+    "abort": {
+      "already_configured": "Cet appareil est déjà configuré."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "total_power": { "name": "Puissance totale" },
+      "a_phase_power": { "name": "Puissance Phase A" },
+      "b_phase_power": { "name": "Puissance Phase B" },
+      "c_phase_power": { "name": "Puissance Phase C" },
+      "wifi_rssi": { "name": "Signal Wi-Fi (RSSI)" },
+      "meter_dev_type": { "name": "Type de compteur" },
+      "meter_mac_code": { "name": "MAC Compteur" },
+      "hhm_dev_type": { "name": "Type d'appareil HHM" },
+      "hhm_mac_code": { "name": "MAC HHM" },
+      "info_idx": { "name": "Index d'information" },
+      "a_chrg_status": { "name": "Statut de charge Phase A" },
+      "b_chrg_status": { "name": "Statut de charge Phase B" },
+      "c_chrg_status": { "name": "Statut de charge Phase C" },
+      "abc_chrg_nb": { "name": "Énergie totale chargée" },
+      "x_chrg_power": { "name": "Puissance de charge non assignée" },
+      "a_chrg_power": { "name": "Puissance de charge Phase A" },
+      "b_chrg_power": { "name": "Puissance de charge Phase B" },
+      "c_chrg_power": { "name": "Puissance de charge Phase C" },
+      "abc_chrg_power": { "name": "Puissance totale de charge" },
+      "x_dchrg_power": { "name": "Puissance de décharge non assignée" },
+      "a_dchrg_power": { "name": "Puissance de décharge Phase A" },
+      "b_dchrg_power": { "name": "Puissance de décharge Phase B" },
+      "c_dchrg_power": { "name": "Puissance de décharge Phase C" },
+      "abc_dchrg_power": { "name": "Puissance totale de décharge" }
+    }
+  },
+  "selector": {
+    "ct_type": {
+      "options": {
+        "HME-4": "HME-4 (CT002)",
+        "HME-3": "HME-3 (CT003)"
+      }
+    },
+    "device_type_prefix": {
+      "options": {
+        "HMG": "HMG (Marstek Venus)",
+        "HMB": "HMB (Batterie B2500 v1)",
+        "HMA": "HMA (Batterie B2500 v2)",
+        "HMK": "HMK (Batterie Greensolar v3)"
+      }
+    }
+  }
+}

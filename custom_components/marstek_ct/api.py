@@ -22,30 +22,49 @@ class MarstekCtApi:
         self._timeout = 5.0
         self._payload = self._build_payload()
 
-    def _build_payload(self):
+    def _build_payload(self, ct_mac=None):
         """Builds the UDP payload for the query."""
+        target_ct_mac = ct_mac if ct_mac is not None else self._ct_mac
         SOH, STX, ETX, SEPARATOR = 0x01, 0x02, 0x03, '|'
-        message_fields = [self._device_type, self._battery_mac, self._ct_type, self._ct_mac, '0', '0']
+        message_fields = [self._device_type, self._battery_mac, self._ct_type, target_ct_mac, '0', '0']
         message_bytes = (SEPARATOR + SEPARATOR.join(message_fields)).encode('ascii')
         base_size = 1 + 1 + len(message_bytes) + 1 + 2
-        total_length = base_size + len(str(base_size + 2))
-        if len(str(total_length)) != len(str(base_size + 2)):
-             total_length = base_size + len(str(total_length))
+        total_length = base_size + 2
+        for length_digits in range(1, 5):
+            candidate = base_size + length_digits
+            if len(str(candidate)) == length_digits:
+                total_length = candidate
+                break
         payload = bytearray([SOH, STX])
         payload.extend(str(total_length).encode('ascii'))
         payload.extend(message_bytes)
         payload.append(ETX)
         xor = 0
-        for b in payload: xor ^= b
+        for b in payload:
+            xor ^= b
         payload.extend(f"{xor:02x}".encode('ascii'))
         return payload
 
     def _decode_response(self, data: bytes):
         """Parses the UDP response."""
+        if len(data) < 10:
+            return {"error": "Response packet too short"}
+        if data[0] != 0x01 or data[1] != 0x02:
+            return {"error": "Missing SOH/STX header in response"}
+
+        sep_index = data.find(b'|', 2)
+        if sep_index == -1:
+            return {"error": "No separator found in response"}
+
+        etx_index = data.rfind(b'\x03')
+        if etx_index == -1 or etx_index <= sep_index:
+            etx_index = len(data) - 2
+
         try:
-            message = data[4:-3].decode('ascii')
-        except UnicodeDecodeError:
-            return {"error": "Invalid ASCII encoding"}
+            message = data[sep_index:etx_index].decode('ascii', errors='ignore')
+        except Exception as e:
+            return {"error": f"Invalid ASCII encoding: {e}"}
+
         fields = message.split('|')[1:]
 
         labels = [
@@ -73,8 +92,17 @@ class MarstekCtApi:
         sock.settimeout(self._timeout)
         try:
             sock.sendto(self._payload, (self._host, self._port))
-            response, _ = sock.recvfrom(1024)
-            return self._decode_response(response)
+            try:
+                response, _ = sock.recvfrom(1024)
+                return self._decode_response(response)
+            except socket.timeout:
+                # If lowercase timed out, retry with uppercase CT MAC
+                if self._ct_mac != self._ct_mac.upper():
+                    upper_payload = self._build_payload(ct_mac=self._ct_mac.upper())
+                    sock.sendto(upper_payload, (self._host, self._port))
+                    response, _ = sock.recvfrom(1024)
+                    return self._decode_response(response)
+                raise
         except socket.timeout:
             return {"error": "Timeout - No response from meter"}
         except Exception as e:

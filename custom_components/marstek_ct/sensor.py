@@ -58,17 +58,18 @@ class MarstekCtSensor(CoordinatorEntity, SensorEntity):
         self.entity_description = description
         
         # Die Unique ID wird jetzt aus beiden MACs und dem Sensor-Schlüssel gebildet
-        ct_mac = coordinator.data["meter_mac_code"]
-        battery_mac = entry.data["battery_mac"]
+        ct_mac = coordinator.data.get("meter_mac_code") or entry.data.get("ct_mac", "")
+        battery_mac = entry.data.get("battery_mac", "001122334455")
         self._attr_unique_id = f"{ct_mac}_{battery_mac}_{description.key}"
         
         # Die Geräte-ID wird ebenfalls aus beiden MACs gebildet
         device_identifier = f"{ct_mac}_{battery_mac}"
+        model_name = coordinator.data.get("meter_dev_type") or "CT002"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, device_identifier)},
-            "name": f"Marstek CT {ct_mac[-4:]} / Battery {battery_mac[-4:]}",
+            "name": f"Marstek CT {str(ct_mac)[-4:]}",
             "manufacturer": "Marstek",
-            "model": coordinator.data["meter_dev_type"],
+            "model": model_name,
         }
     @property
     def native_value(self):

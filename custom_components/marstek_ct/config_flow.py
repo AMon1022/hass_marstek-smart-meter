@@ -14,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required("host"): str,
-        vol.Required("battery_mac"): str,
+        vol.Optional("battery_mac", default="001122334455"): str,
         vol.Required("ct_mac"): str,
         vol.Required("device_type_prefix", default="HMG"): vol.In(["HMG", "HMB", "HMA", "HMK"]),
         vol.Required("device_type_number", default="50"): str,
@@ -49,19 +49,23 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Behandelt den ersten Schritt des Flows."""
         errors = {}
         if user_input is not None:
+            clean_ct_mac = user_input["ct_mac"].replace(":", "").replace("-", "").strip()
+            clean_battery_mac = user_input.get("battery_mac", "").replace(":", "").replace("-", "").strip()
+            if not clean_battery_mac:
+                clean_battery_mac = "001122334455"
+
             final_data = user_input.copy()
-            final_data["device_type"] = user_input["device_type_prefix"]
+            final_data["ct_mac"] = clean_ct_mac
+            final_data["battery_mac"] = clean_battery_mac
+            final_data["device_type"] = f"{user_input['device_type_prefix']}-{user_input['device_type_number']}"
 
             del final_data["device_type_prefix"]
             del final_data["device_type_number"]
 
-            # ===================================================================
-            # HIER IST DIE ÄNDERUNG: Die Unique ID wird aus beiden MACs gebildet
-            # ===================================================================
-            unique_id = f'{format_mac(final_data["ct_mac"])}_{format_mac(final_data["battery_mac"])}'
+            # Unique ID gebildet aus beiden bereinigten MACs
+            unique_id = f'{clean_ct_mac.lower()}_{clean_battery_mac.upper()}'
             await self.async_set_unique_id(unique_id)
             self._abort_if_unique_id_configured()
-            # ===================================================================
 
             try:
                 info = await validate_input(self.hass, final_data)

@@ -17,10 +17,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Marstek CT Meter from a config entry."""
     api = MarstekCtApi(
         host=entry.data["host"],
-        device_type=entry.data["device_type"],
-        battery_mac=entry.data["battery_mac"],
+        device_type=entry.data.get("device_type", "HMG-50"),
+        battery_mac=entry.data.get("battery_mac", "001122334455"),
         ct_mac=entry.data["ct_mac"],
-        ct_type=entry.data["ct_type"],
+        ct_type=entry.data.get("ct_type", "HME-4"),
     )
 
     async def async_update_data():

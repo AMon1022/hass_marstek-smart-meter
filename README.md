@@ -1,7 +1,7 @@
 # Marstek CT Meter - Home Assistant Integration
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/d-shmt/hass_marstek-smart-meter/main/custom_components/marstek_ct/logo.png" width="150">
+  <img src="https://raw.githubusercontent.com/AMon1022/hass_marstek-smart-meter/main/custom_components/marstek_ct/logo.png" width="150">
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/d-shmt/hass_marstek-smart-meter/releases"><img src="https://img.shields.io/github/v/release/d-shmt/hass_marstek-smart-meter?style=for-the-badge&color=blue" alt="Latest Release"></a>
-  <a href="https://github.com/d-shmt/hass_marstek-smart-meter/issues"><img src="https://img.shields.io/github/issues/d-shmt/hass_marstek-smart-meter?style=for-the-badge&color=orange" alt="Open Issues"></a>
+  <a href="https://github.com/AMon1022/hass_marstek-smart-meter/releases"><img src="https://img.shields.io/github/v/release/AMon1022/hass_marstek-smart-meter?style=for-the-badge&color=blue" alt="Latest Release"></a>
+  <a href="https://github.com/AMon1022/hass_marstek-smart-meter/issues"><img src="https://img.shields.io/github/issues/AMon1022/hass_marstek-smart-meter?style=for-the-badge&color=orange" alt="Open Issues"></a>
 </p>
 
 ---
@@ -82,7 +82,7 @@ After restarting, you can add and configure the integration.
 
 ---
 [hacs-badge]: https://my.home-assistant.io/badges/hacs_repository.svg
-[hacs-link]: https://my.home-assistant.io/redirect/hacs_repository/?owner=d-shmt&repository=hass_marstek-smart-meter&category=integration
+[hacs-link]: https://my.home-assistant.io/redirect/hacs_repository/?owner=AMon1022&repository=hass_marstek-smart-meter&category=integration
 [config-badge]: https://my.home-assistant.io/badges/config_flow_start.svg
 [config-link]: https://my.home-assistant.io/redirect/config_flow_start/?domain=marstek_ct
 
@@ -97,4 +97,4 @@ This integration would not have been possible without the foundational work and 
 
 ## 💬 Feedback & Contributions
 
-If you encounter any issues or have suggestions for improvements, please [**open an issue**](https://github.com/d-shmt/hass_marstek-smart-meter/issues) on this GitHub repository. Contributions are always welcome!
+If you encounter any issues or have suggestions for improvements, please [**open an issue**](https://github.com/AMon1022/hass_marstek-smart-meter/issues) on this GitHub repository. Contributions are always welcome!
