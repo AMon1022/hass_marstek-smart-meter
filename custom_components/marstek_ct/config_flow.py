@@ -3,10 +3,10 @@ import logging
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import format_mac
 
-from .const import DOMAIN, CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL, MIN_SCAN_INTERVAL
+from .const import DOMAIN
 from .api import MarstekCtApi, CannotConnect, InvalidAuth
 
 _LOGGER = logging.getLogger(__name__)
@@ -80,40 +80,4 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         
         return self.async_show_form(
             step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
-        )
-
-    @staticmethod
-    @callback
-    def async_get_options_flow(config_entry: config_entries.ConfigEntry):
-        """Get the options flow for this handler."""
-        return MarstekCtOptionsFlow(config_entry)
-
-
-class MarstekCtOptionsFlow(config_entries.OptionsFlow):
-    """Handle options flow for Marstek CT Meter."""
-
-    #def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-    #    """Initialize options flow."""
-    #    self.config_entry = config_entry
-
-    async def async_step_init(self, user_input: dict | None = None) -> dict:
-        """Manage the options."""
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
-
-        current_interval = self.config_entry.options.get(
-            CONF_SCAN_INTERVAL,
-            self.config_entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
-        )
-
-        options_schema = vol.Schema({
-            vol.Required(
-                CONF_SCAN_INTERVAL,
-                default=current_interval,
-            ): vol.All(vol.Coerce(int), vol.Range(min=MIN_SCAN_INTERVAL, max=300)),
-        })
-
-        return self.async_show_form(
-            step_id="init",
-            data_schema=options_schema
         )
