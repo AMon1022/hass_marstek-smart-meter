@@ -23,6 +23,17 @@
       "already_configured": "Cet appareil est déjà configuré."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options du compteur CT",
+        "description": "Configurez l'intervalle de rafraîchissement des mesures.",
+        "data": {
+          "scan_interval": "Intervalle d'actualisation (secondes)"
+        }
+      }
+    }
+  },
   "entity": {
     "sensor": {
       "total_power": { "name": "Puissance totale" },

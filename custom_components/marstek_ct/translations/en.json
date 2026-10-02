@@ -23,6 +23,17 @@
       "already_configured": "This device is already configured."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "CT Meter Options",
+        "description": "Configure the data refresh interval.",
+        "data": {
+          "scan_interval": "Refresh interval (seconds)"
+        }
+      }
+    }
+  },
   "entity": {
     "sensor": {
       "total_power": { "name": "Total Power" },
