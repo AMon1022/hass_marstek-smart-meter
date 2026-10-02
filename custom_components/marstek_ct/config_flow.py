@@ -92,9 +92,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class MarstekCtOptionsFlow(config_entries.OptionsFlow):
     """Handle options flow for Marstek CT Meter."""
 
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        """Initialize options flow."""
-        self.config_entry = config_entry
+    #def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+    #    """Initialize options flow."""
+    #    self.config_entry = config_entry
 
     async def async_step_init(self, user_input: dict | None = None) -> dict:
         """Manage the options."""
